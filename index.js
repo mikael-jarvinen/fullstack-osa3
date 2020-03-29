@@ -24,6 +24,32 @@ let persons = [
     }
 ]
 
+const generateId = () => {
+    return Math.floor(Math.random() * Math.floor(1000));
+}
+
+app.use(express.json())
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+
+    if(!body.name || !body.number){
+        return response.status(400).json({
+            error: 'name or number missing'
+        })
+    }
+    
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
+})
+
 app.get('/info', (request, response) => {
     const personsCount = persons.length
     const date = new Date()
