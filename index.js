@@ -10,7 +10,7 @@ let persons = [
     {
         name: "Ada Lovelace",
         number: "39-44-5323523",
-        id: 4
+        id: 2
     },
     {
         name: "Dan Abramov",
@@ -34,6 +34,17 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(person => person.id === id)
+
+    if(person){
+        response.json(person)
+    } else {
+        response.status(404).end()
+    }
 })
 
 const PORT = 3001
