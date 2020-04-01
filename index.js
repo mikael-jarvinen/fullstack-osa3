@@ -27,6 +27,14 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
+app.get('/info', (request, response) => {
+    let count = 0
+    Person.find({})
+    .then(persons => {
+        response.send(`<p>Phonebook has info for ${persons.length} persons</p>`)
+    })
+})
+
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons)
