@@ -14,7 +14,7 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
     
     const person = new Person({
@@ -22,9 +22,9 @@ app.post('/api/persons', (request, response) => {
         number: body.number,
     })
 
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
-    })
+    person.save().then(savedPerson => savedPerson.toJSON())
+    .then(formattedPerson => response.send(formattedPerson))
+    .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
